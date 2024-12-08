@@ -4,16 +4,16 @@ namespace App\Enums;
 
 enum Role: int
 {
-    case admin = 1;
-    case owner = 2;
-    case common_user = 3;
+    case ADMIN = 1;
+    case OWNER = 2;
+    case COMMON_USER = 3;
 
     public function name(): string
     {
         return match ($this) {
-            self::admin => __('Admin'),
-            self::owner => __('Proprietário'),
-            self::common_user => __('Usuário Comum'),
+            self::ADMIN => __('Admin'),
+            self::OWNER => __('Proprietário'),
+            self::COMMON_USER => __('Usuário Comum'),
         };
     }
 }
