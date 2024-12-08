@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->integer('role')->default(Role::common_user);
+            $table->integer('role')->default(Role::ATHLETE);
             $table->string('photo')->nullable();
             $table->string('cellphone')->nullable();
             $table->string('document')->unique();
