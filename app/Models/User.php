@@ -64,8 +64,8 @@ class User extends Authenticatable
         return $this->role === Role::OWNER;
     }
 
-    public function isCommonUser(): bool
+    public function isAthlete(): bool
     {
-        return $this->role === Role::COMMON_USER;
+        return $this->role === Role::ATHLETE;
     }
 }
