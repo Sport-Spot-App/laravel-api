@@ -1,67 +1,77 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<p align="center" width="400">
+<a href="https://ibb.co/3mcKSS9"><img src="https://i.ibb.co/Mk7dPPx/Design-sem-nome-1.png" alt="Design-sem-nome-1" border="0"></a>
 </p>
 
-## About Laravel
+# 🏐 Sport Spot API
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Introdução
+Bem-vindo à API do Sport Spot, um sistema desenvolvido para facilitar a gestão de quadras esportivas, reservas, e esportes disponíveis. Com esta API, proprietários podem gerenciar suas quadras, usuários podem reservar horários e marcar suas quadras favoritas, criando uma experiência simples e eficiente para todos os envolvidos.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Construído com
+![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
+![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)
+![Mysql](https://img.shields.io/badge/MySQL-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-%231D63ED?style=for-the-badge&logo=docker&logoColor=white)
+- **PHP**: Back-end robusto e escalável com Laravel.
+- **MySQL**: Banco de dados relacional para armazenamento de informações.
+- **Docker**: Ambiente de desenvolvimento padronizado e fácil de configurar.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Escopo do Projeto
+Este projeto tem como objetivo fornecer um sistema de gerenciamento de quadras esportivas que possibilite:
+- Cadastro de quadras esportivas e esportes disponíveis.
+- Gerenciamento de horários disponíveis ou bloqueados para reservas.
+- Funcionalidades de reservas e favoritos.
+- Interface simplificada para administradores e usuários.
 
-## Learning Laravel
+## Pré-requisitos
+Para executar este projeto, é necessário:
+- Docker instalado na máquina.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Tutorial de Instalação
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Passo 1: Ter o Docker instalado no PC
+Certifique-se de que o Docker está instalado e configurado corretamente na sua máquina.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Passo 2: Baixar o projeto do GitHub
+Clone este repositório para sua máquina local:
+```bash
+git clone https://github.com/Sport-Spot-App/laravel-api
+cd laravel-api
+```
 
-## Laravel Sponsors
+### Passo 3: Copiar o arquivo `.env.example`
+Crie uma cópia do arquivo de exemplo de configuração e ajuste as variáveis, se necessário:
+```bash
+cp .env.example .env
+```
+> **Nota:** Você pode alterar as configurações do banco de dados ou a porta padrão, mas recomendamos manter a porta padrão 80 para maior compatibilidade.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Passo 4: Subir o container do Docker com Docker Compose
+Inicie os serviços necessários utilizando o Docker Compose:
+```bash
+docker-compose up -d
+```
 
-### Premium Partners
+### Passo 5: Acessar o container do workspace
+Entre no ambiente de desenvolvimento do container:
+```bash
+docker exec -it Workspace bash
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Passo 6: Instalar as dependências do PHP
+Dentro do container do workspace, instale as dependências do Laravel:
+```bash
+composer install
+```
 
-## Contributing
+### Passo 7: Executar as migrations
+Configure o banco de dados executando as migrations:
+```bash
+php artisan migrate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Autor
+* **Allan Gabriel de Freitas Pedroso** - *Desenvolvedor Fullstack* - [Allan Gabriel](https://github.com/agp531)
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# laravel-api
+## Licença
+Este projeto está licenciado sob a licença MIT. Consulte o arquivo LICENSE para mais detalhes.
