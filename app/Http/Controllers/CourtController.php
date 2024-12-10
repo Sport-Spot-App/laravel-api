@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCourtRequest;
 use App\Http\Requests\UpdateCourtRequest;
 use App\Http\Services\ViaCepService;
 use App\Models\Court;
+use App\Models\User;
 
 class CourtController extends Controller
 {
@@ -30,7 +31,14 @@ class CourtController extends Controller
      */
     public function store(StoreCourtRequest $request)
     {
-        //
+        $validated = $request->validated();
+        
+        if(!auth()->user()->is_approved){
+           return response()->json(['message' => 'Impossível cadastrar quadra, usuário não aprovado!'], 403);
+        }
+
+        $court = Court::create($validated);
+        return response()->json(['message' => 'Quadra cadastrada com sucesso!'], $court);
     }
 
     /**
@@ -56,6 +64,11 @@ class CourtController extends Controller
     public function destroy(Court $court)
     {
         //
+    }
+
+    public function getCourtsByOwner()
+    {
+        return response()->json(auth()->user()->courts);
     }
 
     public function findCep(string $cep)
