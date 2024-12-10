@@ -26,9 +26,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('courts', CourtController::class)->except(['create', 'edit']);
+    Route::get('/courts-owner', [CourtController::class, 'getCourtsByOwner']);
+    Route::get('/cep/{cep}', [UserController::class, 'findCep']);
 });
 
 Route::resource('users', UserController::class)->except(['create', 'edit']);
-
-
-Route::get('/cep/{cep}', [UserController::class, 'findCep']);
