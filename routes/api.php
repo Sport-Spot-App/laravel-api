@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CourtController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,5 +24,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::resource('courts', CourtController::class)->except(['create', 'edit']);
+});
+
 Route::resource('users', UserController::class)->except(['create', 'edit']);
+
+
 Route::get('/cep/{cep}', [UserController::class, 'findCep']);
