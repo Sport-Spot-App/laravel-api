@@ -8,6 +8,7 @@ use App\Enums\Role;
 use Carbon\Traits\Timestamp;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -67,5 +68,10 @@ class User extends Authenticatable
     public function isAthlete(): bool
     {
         return $this->role === Role::ATHLETE;
+    }
+
+    public function courts(): HasMany
+    {
+        return $this->hasMany(Court::class);
     }
 }
