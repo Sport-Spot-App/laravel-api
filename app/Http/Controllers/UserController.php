@@ -5,20 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Services\ViaCepService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    protected $viaCepService;
-
-    public function __construct(ViaCepService $viaCepService)
-    {
-        $this->viaCepService = $viaCepService;
-    }
     /**
      * Display a listing of the resource.
      */
@@ -89,11 +81,6 @@ class UserController extends Controller
         
         $user->delete();
         return response()->json(['message' => 'Usuário deletado com sucesso!']);
-    }
-
-    public function findCep(string $cep)
-    {
-        return $this->viaCepService->findCep($cep);
     }
 
 }

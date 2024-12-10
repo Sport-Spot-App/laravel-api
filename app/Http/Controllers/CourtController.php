@@ -4,25 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCourtRequest;
 use App\Http\Requests\UpdateCourtRequest;
+use App\Http\Services\ViaCepService;
 use App\Models\Court;
 
 class CourtController extends Controller
 {
+
+    protected $viaCepService;
+
+    public function __construct(ViaCepService $viaCepService)
+    {
+        $this->viaCepService = $viaCepService;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return response()->json(Court::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -40,13 +41,6 @@ class CourtController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Court $court)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -62,5 +56,10 @@ class CourtController extends Controller
     public function destroy(Court $court)
     {
         //
+    }
+
+    public function findCep(string $cep)
+    {
+        return $this->viaCepService->findCep($cep);
     }
 }
