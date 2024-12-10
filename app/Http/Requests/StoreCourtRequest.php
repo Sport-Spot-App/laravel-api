@@ -11,7 +11,7 @@ class StoreCourtRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class StoreCourtRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:3000',
+            'zip_code' => 'required|string',
+            'street' => 'required|string|max:255',
+            'number' => 'required|string|max:10',
+            'coordinate_x' => 'nullable|string',
+            'coordinate_y' => 'nullable|string',
+            'price_per_hour' => 'required|numeric',
         ];
     }
 }
