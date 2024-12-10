@@ -55,7 +55,7 @@ docker-compose up -d
 ### Passo 5: Acessar o container do workspace
 Entre no ambiente de desenvolvimento do container:
 ```bash
-docker exec -it Workspace bash
+docker exec -it workspace bash
 ```
 
 ### Passo 6: Instalar as dependências do PHP
