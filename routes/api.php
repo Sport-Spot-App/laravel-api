@@ -20,14 +20,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth:sanctum');
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('courts', CourtController::class)->except(['create', 'edit']);
     Route::get('/courts-owner', [CourtController::class, 'getCourtsByOwner']);
     Route::get('/cep/{cep}', [UserController::class, 'findCep']);
+    Route::get('/user/auth', function (Request $request) {
+        return $request->user();
+    });
 });
 
 Route::resource('users', UserController::class)->except(['create', 'edit']);
