@@ -44,9 +44,9 @@ class CourtController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Court $court)
+    public function show(string $id)
     {
-        //
+        return response()->json(Court::findOrFail($id));
     }
 
 
