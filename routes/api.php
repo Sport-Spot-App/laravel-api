@@ -22,11 +22,11 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->midd
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('courts', CourtController::class)->except(['create', 'edit']);
-    Route::get('/courts-owner', [CourtController::class, 'getCourtsByOwner']);
-    Route::get('/cep/{cep}', [UserController::class, 'findCep']);
+    Route::get('/cep/{cep}', [CourtController::class, 'findCep']);
     Route::get('/user/auth', function (Request $request) {
         return $request->user();
     });
+    Route::get('/courts/owner', [CourtController::class, 'getCourtsByOwner']);
 });
 
 Route::resource('users', UserController::class)->except(['create', 'edit']);
