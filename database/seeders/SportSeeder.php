@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SportSeeder extends Seeder
 {
@@ -42,5 +42,6 @@ class SportSeeder extends Seeder
                 'photo' => 'https://sportspott.tech/assets/images/sports/basquete.png',
             ],
        ];
+       DB::table('sports')->insert($sports);
     }
 }
