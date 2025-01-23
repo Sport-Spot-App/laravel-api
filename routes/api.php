@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\UserController;
+use App\Models\Sport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
     Route::get('/courts/owner', [CourtController::class, 'getCourtsByOwner']);
+});
+
+Route::get('/sports', function() {
+    return response()->json(Sport::all());
 });
 
 Route::resource('users', UserController::class)->except(['create', 'edit']);
