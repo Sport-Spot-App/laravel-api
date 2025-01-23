@@ -57,17 +57,17 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === Role::ADMIN;
+        return $this->role === Role::ADMIN->value;
     }
 
     public function isOwner(): bool
     {
-        return $this->role === Role::OWNER;
+        return $this->role === Role::OWNER->value;
     }
 
     public function isAthlete(): bool
     {
-        return $this->role === Role::ATHLETE;
+        return $this->role === Role::ATHLETE->value;
     }
 
     public function courts(): HasMany

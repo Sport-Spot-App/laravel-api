@@ -44,9 +44,9 @@ class CourtController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Court $court)
+    public function show(string $id)
     {
-        //
+        return response()->json(Court::findOrFail($id));
     }
 
 
@@ -55,7 +55,9 @@ class CourtController extends Controller
      */
     public function update(UpdateCourtRequest $request, Court $court)
     {
-        //
+        $validated = $request->validated();
+        $court->update($validated);
+        return response()->json(['message' => 'Quadra atualizada com sucesso!'], $court);
     }
 
     /**
@@ -63,7 +65,11 @@ class CourtController extends Controller
      */
     public function destroy(Court $court)
     {
-        //
+        if(!auth()->user()->isAdmin()){
+            return response()->json(['message' => 'Apenas administradores podem deletar quadras!'], 403);
+        };
+        
+        $court->delete();
     }
 
     public function getCourtsByOwner()

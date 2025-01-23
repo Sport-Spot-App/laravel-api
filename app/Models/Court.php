@@ -35,4 +35,12 @@ class Court extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get the sports for the court.
+     */
+    public function sports()
+    {
+        return $this->belongsToMany(Sport::class);
+    }
 }
