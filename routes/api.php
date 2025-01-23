@@ -32,6 +32,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::get('/sports', function() {
     return response()->json(Sport::all());
-});
+})->middleware('auth:sanctum');
 
 Route::resource('users', UserController::class)->except(['create', 'edit']);
