@@ -53,4 +53,10 @@ class Court extends Model
     {
         return $this->HasMany(GalleryPhoto::class);
     }
+
+    protected static function booted () {
+        static::deleting(function(Court $court) {
+            $court->photos()->delete();
+        });
+    }
 }

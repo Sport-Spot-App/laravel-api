@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('path');
             $table->boolean('is_main')->default(false);
-            $table->foreignId('court_id')->constrained()->onDelete('cascade');
+            $table->foreignId('court_id')->cascadeOnDelete()->constrained();
             $table->softDeletes();
             $table->timestamps();
         });
