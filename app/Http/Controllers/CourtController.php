@@ -32,13 +32,13 @@ class CourtController extends Controller
     public function store(StoreCourtRequest $request)
     {
         $validated = $request->validated();
-        
+        $validated['user_id'] = auth()->user()->id;
         if(!auth()->user()->is_approved){
            return response()->json(['message' => 'Impossível cadastrar quadra, usuário não aprovado!'], 403);
         }
-
         $court = Court::create($validated);
-        return response()->json(['message' => 'Quadra cadastrada com sucesso!'], $court);
+        if(!empty($validated['sports']))$court->sports()->sync($validated['sports']);
+        return response()->json(['message' => 'Quadra cadastrada com sucesso!', 'court' => $court]);
     }
 
     /**
@@ -57,7 +57,8 @@ class CourtController extends Controller
     {
         $validated = $request->validated();
         $court->update($validated);
-        return response()->json(['message' => 'Quadra atualizada com sucesso!'], $court);
+        if(!empty($validated['sports']))$court->sports()->sync($validated['sports']);
+        return response()->json(['message' => 'Quadra atualizada com sucesso!', 'court' => $court]);
     }
 
     /**

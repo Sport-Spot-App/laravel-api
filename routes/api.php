@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\UserController;
+use App\Models\Sport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('api');
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -30,5 +31,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::put('/users/{user}/approve', [UserController::class, 'changeApproveStatus']);
 });
+
+Route::get('/sports', function() {
+    return response()->json(Sport::all());
+})->middleware('auth:sanctum');
 
 Route::resource('users', UserController::class)->except(['create', 'edit']);
