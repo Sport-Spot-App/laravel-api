@@ -27,6 +27,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
     Route::get('/courts/owner', [CourtController::class, 'getCourtsByOwner']);
+
+    Route::put('/users/{user}/approve', [UserController::class, 'changeApproveStatus']);
 });
 
 Route::resource('users', UserController::class)->except(['create', 'edit']);
