@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Court extends Model
@@ -43,5 +44,13 @@ class Court extends Model
     public function sports(): BelongsToMany
     {
         return $this->belongsToMany(Sport::class);
+    }
+
+    /**
+     * Get the gallery photos for the court.
+     */
+    public function photos(): HasMany
+    {
+        return $this->HasMany(GalleryPhoto::class);
     }
 }
