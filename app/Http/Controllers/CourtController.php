@@ -6,7 +6,9 @@ use App\Http\Requests\StoreCourtRequest;
 use App\Http\Requests\UpdateCourtRequest;
 use App\Http\Services\ViaCepService;
 use App\Models\Court;
+use App\Models\GalleryPhoto;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class CourtController extends Controller
 {
@@ -22,7 +24,7 @@ class CourtController extends Controller
      */
     public function index()
     {
-        return response()->json(Court::all());
+        return response()->json(Court::with('photos')->get());
     }
 
 
@@ -32,11 +34,22 @@ class CourtController extends Controller
     public function store(StoreCourtRequest $request)
     {
         $validated = $request->validated();
-        $validated['user_id'] = auth()->user()->id;
+        $user = auth()->user();
+
+        if($user->isAthlete()){
+            return response()->json(['message' => 'Apenas proprietários de quadras podem cadastrar quadras!'], 403);
+        }
+
+        $validated['user_id'] = $user->id;
+        
         if(!auth()->user()->is_approved){
            return response()->json(['message' => 'Impossível cadastrar quadra, usuário não aprovado!'], 403);
         }
+
         $court = Court::create($validated);
+        if($request->hasFile('photos')){
+            $this->savePhotos($request->photos, $court->id);
+        }
         if(!empty($validated['sports']))$court->sports()->sync($validated['sports']);
         return response()->json(['message' => 'Quadra cadastrada com sucesso!', 'court' => $court]);
     }
@@ -57,6 +70,11 @@ class CourtController extends Controller
     {
         $validated = $request->validated();
         $court->update($validated);
+        
+        if($request->has('photos')){
+            $this->savePhotos($request->photos, $court->id);
+        }
+
         if(!empty($validated['sports']))$court->sports()->sync($validated['sports']);
         return response()->json(['message' => 'Quadra atualizada com sucesso!', 'court' => $court]);
     }
@@ -69,17 +87,39 @@ class CourtController extends Controller
         if(!auth()->user()->isAdmin()){
             return response()->json(['message' => 'Apenas administradores podem deletar quadras!'], 403);
         };
-        
+
+        if ($court->photos()->exists()) {
+            $photoPaths = $court->photos->pluck('path')->toArray();
+            Storage::disk('public')->delete($photoPaths); 
+        }
+
         $court->delete();
+        return response()->json(['message' => 'Quadra deletada com sucesso!']);
     }
 
     public function getCourtsByOwner()
     {
-        return response()->json(auth()->user()->courts);
+        return response()->json(auth()->user()->courts()->with('photos')->get());
     }
 
     public function findCep(string $cep)
     {
         return $this->viaCepService->findCep($cep);
     }
+
+    public function savePhotos(array $photos, string $courtId)
+    {
+
+        GalleryPhoto::where('court_id', $courtId)->delete();
+
+        foreach ($photos as $photo) {
+            $file = $photo->store('images/courts', 'public');
+            GalleryPhoto::create([
+                'name' => $photo->getClientOriginalName(),
+                'court_id' => $courtId,
+                'path' => $file
+            ]);
+        }
+    }
+
 }
