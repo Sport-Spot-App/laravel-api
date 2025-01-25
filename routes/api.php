@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
     Route::get('/courts/owner', [CourtController::class, 'getCourtsByOwner']);
 
-    Route::put('/users/{user}/approve', [UserController::class, 'changeApproveStatus']);
+    Route::put('users/{user}/approve', [UserController::class, 'changeApproveStatus']);
 });
 
 Route::get('/sports', function() {

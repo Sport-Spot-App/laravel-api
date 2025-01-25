@@ -86,7 +86,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if(auth()->user()->isAdmin()){
+        if(!auth()->user()->isAdmin()){
             return response()->json(['message' => 'Apenas Administradores podem aprovar usuários'], 403);
         }
 
