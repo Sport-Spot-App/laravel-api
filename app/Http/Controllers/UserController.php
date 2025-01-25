@@ -16,8 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return response()->json($users);
+        
+        return response()->json(User::all());
     }
 
 
@@ -80,6 +80,27 @@ class UserController extends Controller
         
         $user->delete();
         return response()->json(['message' => 'Usuário deletado com sucesso!']);
+    }
+
+    public function changeApproveStatus(string $id)
+    {
+        $user = User::findOrFail($id);
+
+        if(auth()->user()->isAdmin()){
+            return response()->json(['message' => 'Apenas Administradores podem aprovar usuários'], 403);
+        }
+
+        if(!$user){
+            return response()->json(['message' => 'Usuário não encontrado'], 404);
+        }
+
+        if(!$user->isOwner()){
+            return response()->json(['message' => 'Apenas usuários dono de quadras podem ser aprovados!'], 403);
+        }
+
+        $user->is_approved = !$user->is_approved;
+        $user->save();
+        return response()->json(['message' => 'Usuário aprovado com sucesso!']);
     }
 
 }
