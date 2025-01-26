@@ -24,7 +24,7 @@ class CourtController extends Controller
      */
     public function index()
     {
-        return response()->json(Court::with('photos')->get());
+        return response()->json(Court::with('sports')->with('photos')->get());
     }
 
 
@@ -99,7 +99,7 @@ class CourtController extends Controller
 
     public function getCourtsByOwner()
     {
-        return response()->json(auth()->user()->courts()->with('photos')->get());
+        return response()->json(auth()->user()->courts()->with('sports')->with('photos')->get());
     }
 
     public function findCep(string $cep)

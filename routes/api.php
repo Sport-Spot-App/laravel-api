@@ -27,8 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user/auth', function (Request $request) {
         return $request->user();
     });
-    Route::get('/courts/owner', [CourtController::class, 'getCourtsByOwner']);
-
+    Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
     Route::put('users/{user}/approve', [UserController::class, 'changeApproveStatus']);
 });
 
