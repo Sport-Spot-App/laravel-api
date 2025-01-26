@@ -59,7 +59,7 @@ class UserController extends Controller
         }
         
         $user->update($validated);
-        return response()->json(['message' => 'Usuário Atualizado com sucesso!', 'user' => $user]);
+        return response()->json(['message' => 'Usuário Atualizado com sucesso!', 'user' => $user], 200);
 
     }
 
