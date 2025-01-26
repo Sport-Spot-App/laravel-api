@@ -75,8 +75,9 @@ class User extends Authenticatable
         return $this->hasMany(Court::class);
     }
 
-    public function favorites(): HasMany
+    public function favorites()
     {
-        return $this->hasMany(Favorite::class);
+        return $this->belongsToMany(Court::class, 'favorites', 'user_id', 'court_id')->withTimestamps();
     }
+
 }

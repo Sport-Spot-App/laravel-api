@@ -60,8 +60,9 @@ class Court extends Model
         });
     }
 
-    public function favorites(): HasMany
+    public function favoritedBy()
     {
-        return $this->hasMany(Favorite::class);
+        return $this->belongsToMany(User::class, 'favorites', 'court_id', 'user_id')->withTimestamps();
     }
+
 }
