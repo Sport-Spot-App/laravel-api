@@ -59,4 +59,9 @@ class Court extends Model
             $court->photos()->delete();
         });
     }
+
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }
