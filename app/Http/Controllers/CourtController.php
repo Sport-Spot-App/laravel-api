@@ -136,5 +136,10 @@ class CourtController extends Controller
         return response()->json(['message' => 'Quadra adicionada aos favoritos!']);
     }
 
+    public function getFavorites()
+    {
+        return response()->json(auth()->user()->favorites()->with('sports')->with('photos')->get());
+    }
+
 
 }

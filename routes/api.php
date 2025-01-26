@@ -28,8 +28,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
     Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
-    Route::post('courts/favorite/{id}', [CourtController::class, 'favoriteCourt']);
     Route::put('users/{user}/approve', [UserController::class, 'changeApproveStatus']);
+
+
+    Route::post('courts/favorite/{id}', [CourtController::class, 'favoriteCourt']);
+    Route::get('favorites', [CourtController::class, 'getFavorites']);
 });
 
 Route::get('/sports', function() {
