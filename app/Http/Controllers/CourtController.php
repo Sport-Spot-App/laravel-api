@@ -122,4 +122,19 @@ class CourtController extends Controller
         }
     }
 
+    public function favoriteCourt(string $id)
+    {
+        $user = auth()->user();
+        $court = Court::findOrFail($id);
+
+        if ($user->favorites()->where('court_id', $court->id)->exists()) {
+            $user->favorites()->detach($court->id);
+            return response()->json(['message' => 'Quadra removida dos favoritos!']);
+        }
+
+        $user->favorites()->attach($court->id);
+        return response()->json(['message' => 'Quadra adicionada aos favoritos!']);
+    }
+
+
 }
