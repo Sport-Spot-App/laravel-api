@@ -65,4 +65,9 @@ class Court extends Model
         return $this->belongsToMany(User::class, 'favorites', 'court_id', 'user_id')->withTimestamps();
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
 }

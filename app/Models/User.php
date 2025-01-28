@@ -80,4 +80,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Court::class, 'favorites', 'user_id', 'court_id')->withTimestamps();
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
 }
