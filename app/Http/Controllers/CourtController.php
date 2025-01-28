@@ -37,7 +37,9 @@ class CourtController extends Controller
            return response()->json(['message' => 'Impossível cadastrar quadra, usuário não aprovado!'], 403);
         }
         $court = Court::create($validated);
-        if(!empty($validated['sports']))$court->sports()->sync($validated['sports']);
+
+        if(!empty($validated['sports'])) $court->sports()->sync($validated['sports']);
+        
         return response()->json(['message' => 'Quadra cadastrada com sucesso!', 'court' => $court]);
     }
 
