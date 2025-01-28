@@ -74,4 +74,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Court::class);
     }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(Court::class, 'favorites', 'user_id', 'court_id')->withTimestamps();
+    }
+
 }

@@ -31,6 +31,8 @@ class UpdateCourtRequest extends FormRequest
             'coordinate_y' => 'nullable|string',
             'price_per_hour' => 'required|numeric',
             'sports' => 'nullable',
+            'photos' => 'nullable',
+            'photos.*' => 'image|mimes:jpeg,png,jpg',
         ];
     }
 }
