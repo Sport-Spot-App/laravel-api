@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\UserController;
 use App\Models\Sport;
@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
     Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
     Route::put('users/{user}/approve', [UserController::class, 'changeApproveStatus']);
-
+    Route::post('/reset-password', [NewPasswordController::class, 'store']);
 
     Route::post('courts/favorite/{id}', [CourtController::class, 'favoriteCourt']);
     Route::get('favorites', [CourtController::class, 'getFavorites']);
