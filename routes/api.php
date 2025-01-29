@@ -22,18 +22,18 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middlew
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    
     Route::resource('courts', CourtController::class)->except(['create', 'edit']);
     Route::get('/cep/{cep}', [CourtController::class, 'findCep']);
+    Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
+    Route::post('courts/favorite/{id}', [CourtController::class, 'favoriteCourt']);
+    Route::get('favorites', [CourtController::class, 'getFavorites']);
+    
+    Route::put('users/{user}/approve', [UserController::class, 'changeApproveStatus']);
+    Route::patch('reset-password', [UserController::class, 'updatePassword']);
     Route::get('/user/auth', function (Request $request) {
         return $request->user();
     });
-    Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
-    Route::put('users/{user}/approve', [UserController::class, 'changeApproveStatus']);
-    Route::post('/reset-password', [NewPasswordController::class, 'store']);
-
-    Route::post('courts/favorite/{id}', [CourtController::class, 'favoriteCourt']);
-    Route::get('favorites', [CourtController::class, 'getFavorites']);
-    Route::patch('reset-password', [UserController::class, 'updatePassword']);
 });
 
 Route::get('/sports', function() {
