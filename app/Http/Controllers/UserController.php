@@ -6,7 +6,9 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -101,6 +103,28 @@ class UserController extends Controller
         $user->is_approved = !$user->is_approved;
         $user->save();
         return response()->json(['message' => 'Usuário aprovado com sucesso!']);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        if(auth()->user()->id !== $request->user()->id){
+            return response()->json(['status' => 'Só pode atualizar sua própria senha!'], 403);
+        }
+
+        $validated = $request->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        if (!Hash::check($validated['current_password'], auth()->user()->password)) {
+            return response()->json(['status' => 'Senha atual não confere!'], 400);
+        }
+
+        $user = auth()->user();
+        $user->password = Hash::make($validated['password']);
+        $user->save();
+
+        return response()->json(['status' => 'Senha atualizada com sucesso'], 200);
     }
 
 }

@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('courts/favorite/{id}', [CourtController::class, 'favoriteCourt']);
     Route::get('favorites', [CourtController::class, 'getFavorites']);
+    Route::patch('reset-password', [UserController::class, 'updatePassword']);
 });
 
 Route::get('/sports', function() {
