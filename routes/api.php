@@ -25,9 +25,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::resource('courts', CourtController::class)->except(['create', 'edit']);
     Route::get('/cep/{cep}', [CourtController::class, 'findCep']);
-    Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
+    
     Route::post('courts/favorite/{id}', [CourtController::class, 'favoriteCourt']);
     Route::get('favorites', [CourtController::class, 'getFavorites']);
+    
+    Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
+    
+    Route::post('court/book/{id}', [CourtController::class, 'book']);
     
     Route::put('users/{user}/approve', [UserController::class, 'changeApproveStatus']);
     Route::patch('reset-password', [UserController::class, 'updatePassword']);

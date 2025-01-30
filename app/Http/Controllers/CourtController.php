@@ -8,6 +8,7 @@ use App\Http\Services\ViaCepService;
 use App\Models\Court;
 use App\Models\GalleryPhoto;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class CourtController extends Controller
@@ -141,6 +142,20 @@ class CourtController extends Controller
     public function getFavorites()
     {
         return response()->json(auth()->user()->favorites()->with('sports')->with('photos')->get());
+    }
+
+    public function book(Request $request, string $id)
+    {   
+        $data = $request->validate([
+            'day_of_week' => ['required', 'string'],
+            'start_time' => ['required', 'string'],
+            'end_time' => ['required', 'string'],
+        ]);
+        
+        $data['user_id'] = auth()->user()->id;
+        $data['court_id'] = $id;
+
+        auth()->user()->bookings()->sync($data);
     }
 
 
