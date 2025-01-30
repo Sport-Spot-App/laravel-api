@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCourtRequest;
 use App\Http\Requests\UpdateCourtRequest;
 use App\Http\Services\ViaCepService;
+use App\Models\Booking;
 use App\Models\Court;
 use App\Models\GalleryPhoto;
 use App\Models\User;
@@ -151,11 +152,12 @@ class CourtController extends Controller
             'start_time' => ['required', 'string'],
             'end_time' => ['required', 'string'],
         ]);
-        
-        $data['user_id'] = auth()->user()->id;
+
+        $data['user_id'] = auth()->id();
         $data['court_id'] = $id;
 
-        auth()->user()->bookings()->sync($data);
+        Booking::create($data);
+        return response()->json(['message' => 'Reserva criada com sucesso!']);
     }
 
 
