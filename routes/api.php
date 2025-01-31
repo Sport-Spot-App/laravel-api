@@ -28,7 +28,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::post('courts/favorite/{id}', [CourtController::class, 'favoriteCourt']);
     Route::get('favorites', [CourtController::class, 'getFavorites']);
-    
+    Route::get('bookings', [CourtController::class, 'getBookings']);
+    Route::post('approveBook/{courtId', [CourtController::class, 'approveBook']);
+
     Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
     
     Route::post('court/book/{id}', [CourtController::class, 'book']);
