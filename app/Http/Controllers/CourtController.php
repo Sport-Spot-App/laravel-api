@@ -165,11 +165,11 @@ class CourtController extends Controller
         return response()->json(Booking::with('court')->where('user_id', auth()->user()->id)->get());
     }
 
-    // public function approveBook(string $courtId)
-    // {
-    //     if(){
-
-    //     }
-    //     return response()->json();
-    // }
+    public function approveBook(string $courtId)
+    {
+        $booking = Booking::findOrFail($courtId);
+        $booking->update(['approved' => true]);
+        return response()->json(['message' => 'Reserva aprovada com sucesso!']);
+       return response()->json();
+    }
 }
