@@ -189,7 +189,5 @@ class CourtController extends Controller
         $court->coordinate_x = $coordinates[0]['location']['lat'];
         $court->coordinate_y = $coordinates[0]['location']['lng'];
         $court->save();
-        
-
     }
 }
