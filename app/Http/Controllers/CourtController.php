@@ -54,7 +54,7 @@ class CourtController extends Controller
         }
 
         if(!empty($validated['sports'])) $court->sports()->sync($validated['sports']);
-        
+        $this->getGeocode($court);
         return response()->json(['message' => 'Quadra cadastrada com sucesso!', 'court' => $court]);
     }
 
@@ -171,5 +171,25 @@ class CourtController extends Controller
         $booking->update(['approved' => true]);
         return response()->json(['message' => 'Reserva aprovada com sucesso!']);
        return response()->json();
+    }
+
+    public function getGeocode(Court $court)
+    {
+        $address = $court->zip_code. ' ' . $court->number . ' ' . $court->street;
+
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($address) . "&key=" . env('GOOGLE_API_KEY');
+        $response = Http::get($url);
+
+        if (!$response->successful()) {
+            return response()->json(['error' => 'Erro ao buscar coordenadas no geocoding API'], 500);
+        } 
+
+        $data = $response->json();
+        $coordinates =  array_column($data['results'], 'geometry');
+        $court->coordinate_x = $coordinates[0]['location']['lat'];
+        $court->coordinate_y = $coordinates[0]['location']['lng'];
+        $court->save();
+        
+
     }
 }
