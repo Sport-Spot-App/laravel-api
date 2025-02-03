@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->cascadeOnDelete()->constrained();
             $table->foreignId('court_id')->cascadeOnDelete()->constrained();
             $table->string('day_of_week');
-            $table->string('start_time');
-            $table->string('end_time');
+            $table->dateTime('start_datetime');
+            $table->dateTime('end_datetime');
             $table->boolean('status')->default(false); 
             $table->timestamps();
         });
