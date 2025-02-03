@@ -46,15 +46,15 @@ class CourtController extends Controller
 
         $validated['user_id'] = $user->id;
         $validated['price_per_hour'] = (float) $validated['price_per_hour'];
-        
+
         if(!auth()->user()->is_approved){
            return response()->json(['message' => 'Impossível cadastrar quadra, usuário não aprovado!'], 403);
         }
 
         $court = Court::create($validated);
-        if($request->hasFile('photos')){
-            $this->savePhotos($request->file('photos') ?? [], $court->id);
-        }
+        
+        $this->savePhotos($request->file('photos') ?? [], $court->id);
+        
 
         if(!empty($validated['sports'])) $court->sports()->sync($validated['sports']);
         $this->getGeocode($court);
@@ -79,7 +79,7 @@ class CourtController extends Controller
         $validated['price_per_hour'] = (float) $validated['price_per_hour'];
         $court->update($validated);
         
-        if($request->has('photos')){
+        if($request->hasFile('photos')){
             $this->savePhotos($request->photos, $court->id);
         }
 
@@ -152,21 +152,58 @@ class CourtController extends Controller
     public function book(Request $request, string $id)
     {   
         $data = $request->validate([
-            'day_of_week' => ['required', 'string'],
-            'start_time' => ['required', 'string'],
-            'end_time' => ['required', 'string'],
+            'times' => ['required', 'array'],
+            'times.*.start_datetime' => ['required', 'date_format:Y-m-d H:i:s'],
+            'times.*.end_datetime' => ['required', 'date_format:Y-m-d H:i:s'],
         ]);
 
-        $data['user_id'] = auth()->id();
-        $data['court_id'] = $id;
+        $userId = auth()->id();
 
-        Booking::create($data);
-        return response()->json(['message' => 'Reserva criada com sucesso!']);
+        foreach ($data['times'] as $timeSlot) {
+            $startDateTime = Carbon::parse($timeSlot['start_datetime']);
+            $endDateTime = Carbon::parse($timeSlot['end_datetime']);
+
+            $existingBooking = Booking::where('court_id', $id)
+                ->where(function ($query) use ($startDateTime, $endDateTime) {
+                    $query->whereBetween('start_datetime', [$startDateTime, $endDateTime])
+                        ->orWhereBetween('end_datetime', [$startDateTime, $endDateTime]);
+                })
+                ->exists();
+
+            if ($existingBooking) {
+                return response()->json(['message' => "O horário de {$startDateTime->format('H:i')} às {$endDateTime->format('H:i')} já está reservado!"], 400);
+            }
+
+            Booking::create([
+                'user_id' => $userId,
+                'court_id' => $id,
+                'start_datetime' => $startDateTime,
+                'end_datetime' => $endDateTime,
+                'status' => false
+            ]);
+        }
+
+        return response()->json(['message' => 'Reserva(s) criada(s) com sucesso!']);
     }
 
     public function getBookings()
     {
-        return response()->json(Booking::with('court')->where('user_id', auth()->user()->id)->get());
+        $user = auth()->user();
+
+        if($user->isOwner()){
+            $bookingsAsOwner = Booking::with('user', 'court')
+            ->whereHas('court', function ($query) use ($user) {
+                $query->where('owner_id', $user->id);
+            })
+            ->get();
+
+            return response()->json(['bookings' => $bookingsAsOwner]);
+        }
+
+        $bookingsAsAthlete = Booking::with('court')
+            ->where('user_id', $user->id)
+            ->get();
+        return response()->json(['bookings' => $bookingsAsAthlete]);
     }
 
     public function approveBook(string $bookingId)
