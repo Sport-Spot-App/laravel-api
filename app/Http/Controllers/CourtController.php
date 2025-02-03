@@ -8,8 +8,10 @@ use App\Http\Services\ViaCepService;
 use App\Models\Booking;
 use App\Models\Court;
 use App\Models\GalleryPhoto;
-use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class CourtController extends Controller
