@@ -29,7 +29,7 @@ class StoreCourtRequest extends FormRequest
             'number' => 'required|string|max:10',
             'coordinate_x' => 'nullable|string',
             'coordinate_y' => 'nullable|string',
-            'price_per_hour' => 'required|numeric',
+            'price_per_hour' => 'required|string',
             'sports' => 'nullable',
             'photos' => 'nullable',
             'photos.*' => 'image|mimes:jpeg,png,jpg',

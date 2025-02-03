@@ -43,6 +43,7 @@ class CourtController extends Controller
         }
 
         $validated['user_id'] = $user->id;
+        $validated['price_per_hour'] = (float) $validated['price_per_hour'];
         
         if(!auth()->user()->is_approved){
            return response()->json(['message' => 'Impossível cadastrar quadra, usuário não aprovado!'], 403);
@@ -73,6 +74,7 @@ class CourtController extends Controller
     public function update(UpdateCourtRequest $request, Court $court)
     {
         $validated = $request->validated();
+        $validated['price_per_hour'] = (float) $validated['price_per_hour'];
         $court->update($validated);
         
         if($request->has('photos')){
