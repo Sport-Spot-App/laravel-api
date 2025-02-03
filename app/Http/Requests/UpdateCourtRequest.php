@@ -32,7 +32,7 @@ class UpdateCourtRequest extends FormRequest
             'price_per_hour' => 'required|string',
             'sports' => 'nullable',
             'photos' => 'nullable',
-            'photos.*' => 'image|mimes:jpeg,png,jpg',
+            'photos.*' => 'nullable',
         ];
     }
 }
