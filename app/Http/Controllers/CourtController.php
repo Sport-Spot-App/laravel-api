@@ -53,7 +53,7 @@ class CourtController extends Controller
 
         $court = Court::create($validated);
         if($request->hasFile('photos')){
-            $this->savePhotos($request->photos, $court->id);
+            $this->savePhotos($request->file('photos') ?? [], $court->id);
         }
 
         if(!empty($validated['sports'])) $court->sports()->sync($validated['sports']);
