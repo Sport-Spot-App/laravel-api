@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\UserController;
+use App\Models\Court;
 use App\Models\Sport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,11 +30,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('courts/favorite/{id}', [CourtController::class, 'favoriteCourt']);
     Route::get('favorites', [CourtController::class, 'getFavorites']);
     Route::get('bookings', [CourtController::class, 'getBookings']);
-    Route::post('approveBook/{courtId', [CourtController::class, 'approveBook']);
-
+    Route::post('court/book/{id}', [CourtController::class, 'book']);
+    Route::put('approveBook/{bookingId}', [CourtController::class, 'approveBook']);
     Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
     
-    Route::post('court/book/{id}', [CourtController::class, 'book']);
     
     Route::put('users/{user}/approve', [UserController::class, 'changeApproveStatus']);
     Route::patch('reset-password', [UserController::class, 'updatePassword']);
