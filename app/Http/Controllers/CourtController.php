@@ -53,8 +53,9 @@ class CourtController extends Controller
 
         $court = Court::create($validated);
         
-        $this->savePhotos($request->file('photos') ?? [], $court->id);
-        
+        if($request->hasFile('photos')){
+            $this->savePhotos($request->file('photos') ?? [], $court->id);
+        }
 
         if(!empty($validated['sports'])) $court->sports()->sync($validated['sports']);
         $this->getGeocode($court);
