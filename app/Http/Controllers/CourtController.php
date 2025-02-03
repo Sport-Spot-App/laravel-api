@@ -165,10 +165,21 @@ class CourtController extends Controller
         return response()->json(Booking::with('court')->where('user_id', auth()->user()->id)->get());
     }
 
-    public function approveBook(string $courtId)
+    public function approveBook(string $bookingId)
     {
-        $booking = Booking::findOrFail($courtId);
-        $booking->update(['approved' => true]);
+        $booking = Booking::findOrFail($bookingId);
+
+        if(auth()->user()->isAthlete() && $booking->court->user_id != auth()->user()->id){
+            return response()->json(['message' => 'Apenas proprietários de quadras podem aprovar reservas!'], 403);
+        }
+        
+        
+        $booking->update(['status' => true]);
+        Schedule::where('court_id', $booking->court_id)
+            ->where('day_of_week', $booking->day_of_week)
+            ->where('start_time', $booking->start_time)
+            ->where('end_time', $booking->end_time)
+            ->update(['blocked' => true]);
         return response()->json(['message' => 'Reserva aprovada com sucesso!']);
        return response()->json();
     }
