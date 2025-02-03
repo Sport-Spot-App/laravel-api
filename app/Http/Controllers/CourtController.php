@@ -52,7 +52,7 @@ class CourtController extends Controller
         }
 
         $court = Court::create($validated);
-        
+
         if($request->hasFile('photos')){
             $this->savePhotos($request->file('photos') ?? [], $court->id);
         }
