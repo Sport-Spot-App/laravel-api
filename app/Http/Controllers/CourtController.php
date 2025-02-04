@@ -68,7 +68,7 @@ class CourtController extends Controller
      */
     public function show(string $id)
     {
-        return response()->json(Court::findOrFail($id));
+        return response()->json(Court::findOrFail($id)->with('sports')->with('photos')->with('schedules')->get());
     }
 
 
@@ -123,7 +123,7 @@ class CourtController extends Controller
         GalleryPhoto::where('court_id', $courtId)->delete();
 
         foreach ($photos as $photo) {
-            $file = $photo->store('storage/images/courts', 'public');
+            $file = $photo->store('images/courts', 'public');
             GalleryPhoto::create([
                 'name' => $photo->getClientOriginalName(),
                 'court_id' => $courtId,
