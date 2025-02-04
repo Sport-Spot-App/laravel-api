@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCourtRequest;
 use App\Http\Services\ViaCepService;
 use App\Models\Booking;
 use App\Models\Court;
+use App\Models\CourtSchedule;
 use App\Models\GalleryPhoto;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
@@ -59,7 +60,7 @@ class CourtController extends Controller
 
         if(!empty($validated['sports'])) $court->sports()->sync($validated['sports']);
         $this->getGeocode($court);
-        $this->generateSchedule($validated['schedules'], $court);
+        $this->generateSchedule($validated, $court);
         return response()->json(['message' => 'Quadra cadastrada com sucesso!', 'court' => $court]);
     }
 
@@ -68,8 +69,9 @@ class CourtController extends Controller
      */
     public function show(string $id)
     {
+        $blockedDays = $this->getBlockedDays($id);
         $court = Court::find($id)->with('sports')->with('photos')->with('schedules')->get();
-        return response()->json( $court);
+        return response()->json(['court' => $court, 'blocked_days' => $blockedDays]);
     }
 
 
@@ -246,14 +248,22 @@ class CourtController extends Controller
         $court->save();
     }
 
-    public function generateSchedule(array $schedules, Court $court)
+    public function generateSchedule(array $validated, Court $court)
     {
-        foreach ($schedules as $schedule) {
+        $work_days = $validated['work_days'];
+        foreach ($work_days as $day) {
             $court->schedules()->create([
-                'day_of_week' => $schedule['day_of_week'],
-                'start_time' => $schedule['start_time'],
-                'end_time' => $schedule['end_time'],
+                'day_of_week' => $day,
+                'start_time' => $validated['initial_hour'],
+                'end_time' => $validated['final_hour'],
             ]);
         }
+    }
+
+    public function getBlockedDays($id)
+    {
+        $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        $workDays = CourtSchedule::where('court_id', $id)->select('day_of_week')->pluck('day_of_week')->toArray();
+        return array_diff($daysOfWeek, $workDays);
     }
 }
