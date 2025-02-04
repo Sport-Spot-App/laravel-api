@@ -59,6 +59,7 @@ class CourtController extends Controller
 
         if(!empty($validated['sports'])) $court->sports()->sync($validated['sports']);
         $this->getGeocode($court);
+        $this->generateSchedule($validated['schedules'], $court);
         return response()->json(['message' => 'Quadra cadastrada com sucesso!', 'court' => $court]);
     }
 
@@ -242,5 +243,16 @@ class CourtController extends Controller
         $court->coordinate_x = $coordinates[0]['location']['lat'];
         $court->coordinate_y = $coordinates[0]['location']['lng'];
         $court->save();
+    }
+
+    public function generateSchedule(array $schedules, Court $court)
+    {
+        foreach ($schedules as $schedule) {
+            $court->schedules()->create([
+                'day_of_week' => $schedule['day_of_week'],
+                'start_time' => $schedule['start_time'],
+                'end_time' => $schedule['end_time'],
+            ]);
+        }
     }
 }
