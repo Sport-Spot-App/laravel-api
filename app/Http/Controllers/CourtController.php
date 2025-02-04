@@ -122,7 +122,7 @@ class CourtController extends Controller
         GalleryPhoto::where('court_id', $courtId)->delete();
 
         foreach ($photos as $photo) {
-            $file = $photo->store('images/courts', 'public');
+            $file = $photo->store('storage/images/courts', 'public');
             GalleryPhoto::create([
                 'name' => $photo->getClientOriginalName(),
                 'court_id' => $courtId,

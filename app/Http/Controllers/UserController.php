@@ -57,7 +57,7 @@ class UserController extends Controller
         $validated = $request->validated();
 
         if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('images/users', 'public');
+            $data['photo'] = $request->file('photo')->store('storage/images/users', 'public');
         }
         
         $user->update($validated);
