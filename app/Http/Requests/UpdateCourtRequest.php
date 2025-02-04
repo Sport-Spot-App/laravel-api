@@ -34,7 +34,7 @@ class UpdateCourtRequest extends FormRequest
             'photos' => 'nullable',
             'photos.*' => 'image|mimes:jpeg,png,jpg',
             'schedules' => 'nullable',
-            'schedules.*.day' => 'required|string',
+            'schedules.*.day_of_week' => 'required|string',
             'schedules.*.start_time' => 'nullable|string',
             'schedules.*.end_time' => 'nullable|string',
         ];
