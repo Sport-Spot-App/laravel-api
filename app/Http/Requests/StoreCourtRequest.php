@@ -35,8 +35,8 @@ class StoreCourtRequest extends FormRequest
             'photos.*' => 'image|mimes:jpeg,png,jpg',
             'schedules' => 'nullable',
             'schedules.*.day' => 'required|string',
-            'schedules.*.start_time' => 'required|string',
-            'schedules.*.end_time' => 'required|string',
+            'schedules.*.start_time' => 'nullable|string',
+            'schedules.*.end_time' => 'nullable|string',
         ];
     }
 }
