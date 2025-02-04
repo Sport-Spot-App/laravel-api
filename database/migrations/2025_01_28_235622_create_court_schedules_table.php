@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('day_of_week');
             $table->string('start_time');
             $table->string('end_time');
-            $table->boolean('blocked')->default(false);
             $table->timestamps();
         });
     }
