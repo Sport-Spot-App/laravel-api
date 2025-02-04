@@ -68,7 +68,8 @@ class CourtController extends Controller
      */
     public function show(string $id)
     {
-        return response()->json(Court::findOrFail($id)->with('sports')->with('photos')->with('schedules')->get());
+        $court = Court::find($id)->with('sports')->with('photos')->with('schedules')->get();
+        return response()->json( $court);
     }
 
 
