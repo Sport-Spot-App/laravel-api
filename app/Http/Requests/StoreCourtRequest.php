@@ -33,6 +33,10 @@ class StoreCourtRequest extends FormRequest
             'sports' => 'nullable',
             'photos' => 'nullable',
             'photos.*' => 'image|mimes:jpeg,png,jpg',
+            'schedules' => 'nullable',
+            'schedules.*.day' => 'required|string',
+            'schedules.*.start_time' => 'required|string',
+            'schedules.*.end_time' => 'required|string',
         ];
     }
 }
