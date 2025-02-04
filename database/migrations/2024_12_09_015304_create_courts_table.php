@@ -18,6 +18,11 @@ return new class extends Migration
             $table->string('zip_code');
             $table->string('street');
             $table->string('number');
+            $table->string('logradouro')->nullable();
+            $table->string('complemento')->nullable();
+            $table->string('bairro')->nullable();
+            $table->string('localidade')->nullable();
+            $table->string('estado')->nullable();
             $table->decimal('coordinate_x', 10, 7)->nullable();
             $table->decimal('coordinate_y', 10, 7)->nullable();
             $table->decimal('price_per_hour', 8, 2);
