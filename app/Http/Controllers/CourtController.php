@@ -222,8 +222,8 @@ class CourtController extends Controller
 
     public function approveBook(string $bookingId)
     {
-        $booking = Booking::where('id', $bookingId)->get();
-
+        $booking = Booking::where('id', $bookingId)->first();
+        
         if(auth()->user()->isAthlete() && $booking->court->user_id != auth()->user()->id){
             return response()->json(['message' => 'Apenas proprietários de quadras podem aprovar reservas!'], 403);
         }
