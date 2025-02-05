@@ -155,14 +155,14 @@ class CourtController extends Controller
     public function book(Request $request, string $id)
     {   
         $data = $request->validate([
-            'times' => ['required', 'array'],
-            'times.*.start_datetime' => ['required', 'date_format:Y-m-d H:i:s'],
-            'times.*.end_datetime' => ['required', 'date_format:Y-m-d H:i:s'],
+            'bookings' => ['required', 'array'],
+            'bookings.*.start_datetime' => ['required'],
+            'bookings.*.end_datetime' => ['required'],
         ]);
 
         $userId = auth()->id();
 
-        foreach ($data['times'] as $timeSlot) {
+        foreach ($data['bookings'] as $timeSlot) {
             $startDateTime = Carbon::parse($timeSlot['start_datetime']);
             $endDateTime = Carbon::parse($timeSlot['end_datetime']);
 
@@ -211,19 +211,13 @@ class CourtController extends Controller
 
     public function approveBook(string $bookingId)
     {
-        $booking = Booking::findOrFail($bookingId);
+        $booking = Booking::where('id', $bookingId)->get();
 
         if(auth()->user()->isAthlete() && $booking->court->user_id != auth()->user()->id){
             return response()->json(['message' => 'Apenas proprietários de quadras podem aprovar reservas!'], 403);
         }
         
-        
         $booking->update(['status' => true]);
-        Schedule::where('court_id', $booking->court_id)
-            ->where('day_of_week', $booking->day_of_week)
-            ->where('start_time', $booking->start_time)
-            ->where('end_time', $booking->end_time)
-            ->update(['blocked' => true]);
         return response()->json(['message' => 'Reserva aprovada com sucesso!']);
        return response()->json();
     }
