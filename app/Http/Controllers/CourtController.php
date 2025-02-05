@@ -39,7 +39,7 @@ class CourtController extends Controller
     {
         $validated = $request->validated();
         $user = auth()->user();
-
+        $validated['work_days'] = json_encode($validated['work_days']); 
         if($user->isAthlete()){
             return response()->json(['message' => 'Apenas proprietários de quadras podem cadastrar quadras!'], 403);
         }
@@ -59,7 +59,6 @@ class CourtController extends Controller
 
         if(!empty($validated['sports'])) $court->sports()->sync($validated['sports']);
         $this->getGeocode($court);
-        // $this->generateSchedule($validated, $court);
         return response()->json(['message' => 'Quadra cadastrada com sucesso!', 'court' => $court]);
     }
 
@@ -80,6 +79,7 @@ class CourtController extends Controller
     {
         $validated = $request->validated();
         $validated['price_per_hour'] = (float) $validated['price_per_hour'];
+        $validated['work_days'] = json_encode($validated['work_days']); 
         $court->update($validated);
         
         if($request->hasFile('photos')){

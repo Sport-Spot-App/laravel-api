@@ -38,9 +38,9 @@ class UpdateCourtRequest extends FormRequest
             'sports' => 'nullable',
             'photos' => 'nullable',
             'photos.*' => 'image|mimes:jpeg,png,jpg',
-            'work_days' => 'nullable',
-            'initial_hour' => 'nullable',
-            'final_hour' => 'nullable',
+            'work_days' => 'required',
+            'initial_hour' => 'required|string',
+            'final_hour' => 'required|string',
         ];
     }
 }
