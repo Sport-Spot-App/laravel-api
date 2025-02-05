@@ -12,9 +12,8 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'court_id',
-        'day_of_week',
-        'start_time',
-        'end_time',
+        'start_endtime',
+        'end_endtime',
         'status',
     ];
 
