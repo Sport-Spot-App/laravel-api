@@ -33,6 +33,9 @@ class Court extends Model
         'coordinate_y',
         'price_per_hour',
         'user_id',
+        'initial_hour',
+        'final_hour',
+        'work_days'
     ];
 
     /**

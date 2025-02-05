@@ -60,7 +60,7 @@ class CourtController extends Controller
 
         if(!empty($validated['sports'])) $court->sports()->sync($validated['sports']);
         $this->getGeocode($court);
-        $this->generateSchedule($validated, $court);
+        // $this->generateSchedule($validated, $court);
         return response()->json(['message' => 'Quadra cadastrada com sucesso!', 'court' => $court]);
     }
 
@@ -69,9 +69,8 @@ class CourtController extends Controller
      */
     public function show(string $id)
     {
-        $blockedDays = $this->getBlockedDays($id);
-        $court = Court::find($id)->with('sports')->with('photos')->with('schedules')->get();
-        return response()->json(['court' => $court, 'blocked_days' => $blockedDays]);
+        $court = Court::find($id)->with('sports')->with('photos')->get();
+        return response()->json($court);
     }
 
 
@@ -248,22 +247,22 @@ class CourtController extends Controller
         $court->save();
     }
 
-    public function generateSchedule(array $validated, Court $court)
-    {
-        $work_days = $validated['work_days'];
-        foreach ($work_days as $day) {
-            $court->schedules()->create([
-                'day_of_week' => $day,
-                'start_time' => $validated['initial_hour'],
-                'end_time' => $validated['final_hour'],
-            ]);
-        }
-    }
+    // public function generateSchedule(array $validated, Court $court)
+    // {
+    //     $work_days = $validated['work_days'];
+    //     foreach ($work_days as $day) {
+    //         $court->schedules()->create([
+    //             'day_of_week' => $day,
+    //             'start_time' => $validated['initial_hour'],
+    //             'end_time' => $validated['final_hour'],
+    //         ]);
+    //     }
+    // }
 
-    public function getBlockedDays($id)
-    {
-        $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        $workDays = CourtSchedule::where('court_id', $id)->select('day_of_week')->pluck('day_of_week')->toArray();
-        return array_diff($daysOfWeek, $workDays);
-    }
+    // public function getBlockedDays($id)
+    // {
+    //     $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    //     $workDays = CourtSchedule::where('court_id', $id)->select('day_of_week')->pluck('day_of_week')->toArray();
+    //     return array_diff($daysOfWeek, $workDays);
+    // }
 }
