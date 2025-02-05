@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateCourtRequest;
 use App\Http\Services\ViaCepService;
 use App\Models\Booking;
 use App\Models\Court;
-use App\Models\CourtSchedule;
 use App\Models\GalleryPhoto;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
@@ -246,23 +245,4 @@ class CourtController extends Controller
         $court->coordinate_y = $coordinates[0]['location']['lng'];
         $court->save();
     }
-
-    // public function generateSchedule(array $validated, Court $court)
-    // {
-    //     $work_days = $validated['work_days'];
-    //     foreach ($work_days as $day) {
-    //         $court->schedules()->create([
-    //             'day_of_week' => $day,
-    //             'start_time' => $validated['initial_hour'],
-    //             'end_time' => $validated['final_hour'],
-    //         ]);
-    //     }
-    // }
-
-    // public function getBlockedDays($id)
-    // {
-    //     $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    //     $workDays = CourtSchedule::where('court_id', $id)->select('day_of_week')->pluck('day_of_week')->toArray();
-    //     return array_diff($daysOfWeek, $workDays);
-    // }
 }
