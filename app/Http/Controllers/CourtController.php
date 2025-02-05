@@ -209,6 +209,17 @@ class CourtController extends Controller
         return response()->json(['bookings' => $bookingsAsAthlete]);
     }
 
+    public function getBlockedDaysByOwner(string $ownerId, string $courtId)
+    {
+        try {
+            $blockedBookings = Booking::where('court_id', $courtId)->where('user_id', $ownerId)->get();
+            return response()->json(['blockedBookings' => $blockedBookings]);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Error ao buscar dias bloqueados'], 404);
+        }
+        
+    }
+
     public function approveBook(string $bookingId)
     {
         $booking = Booking::where('id', $bookingId)->get();
@@ -217,9 +228,9 @@ class CourtController extends Controller
             return response()->json(['message' => 'Apenas proprietários de quadras podem aprovar reservas!'], 403);
         }
         
-        $booking->update(['status' => true]);
+        $booking->status = true;
+        $booking->save();
         return response()->json(['message' => 'Reserva aprovada com sucesso!']);
-       return response()->json();
     }
 
     public function getGeocode(Court $court)

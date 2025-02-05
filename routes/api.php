@@ -33,7 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('court/book/{id}', [CourtController::class, 'book']);
     Route::put('approveBook/{bookingId}', [CourtController::class, 'approveBook']);
     Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
-    
+    Route::get('court/{courtId}/booking/{ownerId}', [CourtController::class, 'getBlockedDaysByOwner']);
     
     Route::put('users/{user}/approve', [UserController::class, 'changeApproveStatus']);
     Route::patch('reset-password', [UserController::class, 'updatePassword']);
