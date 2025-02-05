@@ -196,7 +196,7 @@ class CourtController extends Controller
         if($user->isOwner()){
             $bookingsAsOwner = Booking::with('user', 'court')
             ->whereHas('court', function ($query) use ($user) {
-                $query->where('owner_id', $user->id);
+                $query->where('user_id', $user->id);
             })
             ->get();
 
