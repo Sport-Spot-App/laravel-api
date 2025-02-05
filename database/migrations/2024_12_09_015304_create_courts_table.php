@@ -27,7 +27,7 @@ return new class extends Migration
             $table->decimal('coordinate_y', 10, 7)->nullable();
             $table->decimal('price_per_hour', 8, 2);
             $table->string('initial_hour');
-            $table->strng('final_hour');
+            $table->string('final_hour');
             $table->json('work_days')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
