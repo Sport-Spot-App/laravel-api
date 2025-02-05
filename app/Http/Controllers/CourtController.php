@@ -163,25 +163,25 @@ class CourtController extends Controller
         $userId = auth()->id();
 
         foreach ($data['bookings'] as $timeSlot) {
-            $startDateTime = Carbon::parse($timeSlot['start_datetime']);
-            $endDateTime = Carbon::parse($timeSlot['end_datetime']);
+            //$startDateTime = Carbon::parse($timeSlot['start_datetime']);
+            //$endDateTime = Carbon::parse($timeSlot['end_datetime']);
 
-            $existingBooking = Booking::where('court_id', $id)
-                ->where(function ($query) use ($startDateTime, $endDateTime) {
-                    $query->whereBetween('start_datetime', [$startDateTime, $endDateTime])
-                        ->orWhereBetween('end_datetime', [$startDateTime, $endDateTime]);
-                })
-                ->exists();
+            //$existingBooking = Booking::where('court_id', $id)
+                //->where(function ($query) use ($startDateTime, $endDateTime) {
+                    //$query->whereBetween('start_datetime', [$startDateTime, $endDateTime])
+                        //->orWhereBetween('end_datetime', [$startDateTime, $endDateTime]);
+                //})
+                //->exists();
 
-            if ($existingBooking) {
-                return response()->json(['message' => "O horário de {$startDateTime->format('H:i')} às {$endDateTime->format('H:i')} já está reservado!"], 400);
-            }
+            //if ($existingBooking) {
+               // return response()->json(['message' => "O horário de {$startDateTime->format('H:i')} às {$endDateTime->format('H:i')} já está reservado!"], 400);
+            //}//
 
             Booking::create([
                 'user_id' => $userId,
                 'court_id' => $id,
-                'start_datetime' => $startDateTime,
-                'end_datetime' => $endDateTime,
+                'start_datetime' => $timeSlot['start_datetime'],
+                'end_datetime' => $timeSlot['end_datetime'],
                 'status' => false
             ]);
         }
