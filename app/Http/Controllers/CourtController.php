@@ -212,7 +212,7 @@ class CourtController extends Controller
     {
         $court = Court::where('id', $courtId)->first();
         $bookings = Booking::where('court_id', $courtId)
-                        ->where('user_id', "!=", $court->user->id)->where('status', "!=", 3)->get();
+                        ->where('user_id', "!=", $court->user_id)->where('status', "!=", 3)->get();
         return response()->json(['bookings', $bookings]);
     }
 
