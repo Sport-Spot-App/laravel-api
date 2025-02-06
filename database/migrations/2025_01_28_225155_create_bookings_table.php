@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('court_id')->cascadeOnDelete()->constrained();
             $table->dateTime('start_datetime');
             $table->dateTime('end_datetime');
-            $table->boolean('status')->default(false); 
+            $table->int('status')->default(0); 
             $table->timestamps();
         });
     }

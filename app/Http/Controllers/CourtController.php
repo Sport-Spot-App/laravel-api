@@ -173,16 +173,16 @@ class CourtController extends Controller
                 })
                 ->exists();
 
-            //if ($existingBooking) {
-              //  return response()->json(['message' => "O horário de {$startDateTime às {$endDateTime->format('H:i')} já está reservado!"], 400);
-            //}
+            if ($existingBooking) {
+               return response()->json(['message' => "O horário de $startDateTime às $endDateTime já está reservado!"], 400);
+            }
 
             Booking::create([
                 'user_id' => $userId,
                 'court_id' => $id,
                 'start_datetime' => $startDateTime,
                 'end_datetime' => $endDateTime,
-                'status' => false
+                'status' => 0
             ]);
         }
 
@@ -214,8 +214,8 @@ class CourtController extends Controller
         try {
             $blockedBookings = Booking::where('court_id', $courtId)->where('user_id', $ownerId)->get();
             return response()->json(['blockedBookings' => $blockedBookings]);
-        } catch (\Throwable $th) {
-            return response()->json(['message' => 'Error ao buscar dias bloqueados'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error ao buscar dias bloqueados', 'error' => $e->getMessage()], 404);
         }
         
     }
@@ -228,7 +228,7 @@ class CourtController extends Controller
             return response()->json(['message' => 'Apenas proprietários de quadras podem aprovar reservas!'], 403);
         }
         
-        $booking->status = true;
+        $booking->status = 1;
         $booking->save();
         return response()->json(['message' => 'Reserva aprovada com sucesso!']);
     }
