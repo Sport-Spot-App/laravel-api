@@ -220,17 +220,17 @@ class CourtController extends Controller
         
     }
 
-    public function approveBook(string $bookingId)
+    public function approveBook(string $bookingId, int $status)
     {
         $booking = Booking::where('id', $bookingId)->first();
         
         if(auth()->user()->isAthlete() && $booking->court->user_id != auth()->user()->id){
-            return response()->json(['message' => 'Apenas proprietários de quadras podem aprovar reservas!'], 403);
+            return response()->json(['message' => 'Apenas proprietários de quadras podem aprovar/reprovar reservas!'], 403);
         }
         
-        $booking->status = 1;
+        $booking->status = $status;
         $booking->save();
-        return response()->json(['message' => 'Reserva aprovada com sucesso!']);
+        return response()->json(['message' => 'Reserva atualizada com sucesso!']);
     }
 
     public function getGeocode(Court $court)
