@@ -35,7 +35,7 @@ class CourtController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCourtRequest $request)
+    public function store(Request $request)
     {
         $validated = $request->validated();
         $user = auth()->user();
@@ -216,7 +216,7 @@ class CourtController extends Controller
         return response()->json(['bookings', $bookings]);
     }
 
-    public function getBlockedDaysByOwner(string $ownerId, string $courtId)
+    public function getBlockedDaysByOwner(string $courtId, string $ownerId)
     {
         try {
             $blockedBookings = Booking::where('court_id', $courtId)->where('user_id', $ownerId)->get();
