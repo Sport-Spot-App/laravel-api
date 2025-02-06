@@ -189,7 +189,7 @@ class CourtController extends Controller
         return response()->json(['message' => 'Reserva(s) criada(s) com sucesso!']);
     }
 
-    public function getBookings()
+    public function getBookingsBy()
     {
         $user = auth()->user();
 
@@ -197,8 +197,7 @@ class CourtController extends Controller
             $bookingsAsOwner = Booking::with('user', 'court')
             ->whereHas('court', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
-            })
-            ->get();
+            })->where('user_id', "!=", $user->id)->get();
 
             return response()->json(['bookings' => $bookingsAsOwner]);
         }
