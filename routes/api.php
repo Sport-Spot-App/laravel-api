@@ -24,17 +24,25 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->midd
 
 Route::middleware(['auth:sanctum'])->group(function () {
     
+    //COURT
     Route::resource('courts', CourtController::class)->except(['create', 'edit']);
-    Route::get('/cep/{cep}', [CourtController::class, 'findCep']);
+    Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
     
+    //FAVORITE
     Route::post('courts/favorite/{id}', [CourtController::class, 'favoriteCourt']);
     Route::get('favorites', [CourtController::class, 'getFavorites']);
-    Route::get('bookings', [CourtController::class, 'getBookings']);
+
+    //BOOKINGS 
+    Route::get('bookings', [CourtController::class, 'getBookingsBy']);
+    Route::get('bookings/court/{courtId}', [CourtController::class, 'getBookings']);
     Route::post('court/book/{id}', [CourtController::class, 'book']);
-    Route::put('approveBook/{bookingId}', [CourtController::class, 'approveBook']);
-    Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
+    Route::put('approveBook/{bookingId}/{status}', [CourtController::class, 'approveBook']);
     Route::get('court/{courtId}/booking/{ownerId}', [CourtController::class, 'getBlockedDaysByOwner']);
-    
+
+    //VIACEP
+    Route::get('/cep/{cep}', [CourtController::class, 'findCep']);
+
+    //USER
     Route::put('users/{user}/approve', [UserController::class, 'changeApproveStatus']);
     Route::patch('reset-password', [UserController::class, 'updatePassword']);
     Route::get('/user/auth', function (Request $request) {
