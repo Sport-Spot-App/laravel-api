@@ -25,7 +25,8 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->midd
 Route::middleware(['auth:sanctum'])->group(function () {
     
     //COURT
-    Route::resource('courts', CourtController::class)->except(['create', 'edit']);
+    Route::resource('courts', CourtController::class)->except(['create', 'edit', 'update']);
+    Route::post('courts/{id}', [CourtController::class, 'update']);
     Route::get('owner/courts', [CourtController::class, 'getCourtsByOwner']);
     
     //FAVORITE
