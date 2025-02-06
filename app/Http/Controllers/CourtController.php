@@ -36,7 +36,7 @@ class CourtController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreCourtRequest $request)
     {
         $validated = $request->validated();
         $user = auth()->user();
