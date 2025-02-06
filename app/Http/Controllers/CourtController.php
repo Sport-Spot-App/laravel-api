@@ -209,6 +209,14 @@ class CourtController extends Controller
         return response()->json(['bookings' => $bookingsAsAthlete]);
     }
 
+    public function getBookings(string $courtId)
+    {
+        $court = Court::where('id', $courtId)->first();
+        $bookings = Booking::where('court_id', $courtId)
+                        ->where('user_id', "!=", $court->user->id)->where('status', "!=", 3)->get();
+        return response()->json(['bookings', $bookings]);
+    }
+
     public function getBlockedDaysByOwner(string $ownerId, string $courtId)
     {
         try {
@@ -217,7 +225,6 @@ class CourtController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error ao buscar dias bloqueados', 'error' => $e->getMessage()], 404);
         }
-        
     }
 
     public function approveBook(string $bookingId, int $status)
