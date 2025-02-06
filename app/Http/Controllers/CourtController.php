@@ -213,7 +213,7 @@ class CourtController extends Controller
     {
         try {
             $blockedBookings = Booking::where('court_id', $courtId)->where('user_id', $ownerId)->get();
-            return response()->json(['blockedBookings' => $blockedBookings]);
+            return response()->json(['bookings' => $blockedBookings]);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error ao buscar dias bloqueados', 'error' => $e->getMessage()], 404);
         }
