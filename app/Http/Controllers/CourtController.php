@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCourtRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateCourtRequest;
 use App\Http\Services\ViaCepService;
 use App\Models\Booking;
@@ -35,7 +36,7 @@ class CourtController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         $validated = $request->validated();
         $user = auth()->user();
@@ -75,8 +76,9 @@ class CourtController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCourtRequest $request, Court $court)
+    public function update(UpdateCourtRequest $request, string $id)
     {
+        $court = Court::where('id', $id)->first();
         $validated = $request->validated();
         $validated['price_per_hour'] = (float) $validated['price_per_hour'];
         $validated['work_days'] = json_encode($validated['work_days']); 
